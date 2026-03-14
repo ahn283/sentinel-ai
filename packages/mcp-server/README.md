@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ahn283/sentinel-qa/main/img/sentinel_qa.png" alt="Sentinel QA" width="480" />
+  <img src="https://raw.githubusercontent.com/ahn283/sentinel-qa/main/img/sentinel_logo.png" alt="Sentinel QA" width="480" />
 </p>
 
 <p align="center">
