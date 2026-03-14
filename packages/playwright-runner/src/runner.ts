@@ -1,7 +1,8 @@
-import { mkdtemp, writeFile, rm, readFile, mkdir } from 'node:fs/promises';
+import { mkdtemp, writeFile, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
 
 import type {
   TestInput,
@@ -12,6 +13,7 @@ import type {
   PlaywrightSuite,
   PlaywrightSpec,
 } from './types.js';
+import { validateTestCode } from './validator.js';
 
 const DEFAULT_TIMEOUT = 30_000;
 
@@ -131,6 +133,30 @@ export async function runPlaywrightTests(
   const tmpDir = await mkdtemp(join(tmpdir(), 'sentinel-pw-'));
 
   try {
+    // Validate all test code before writing
+    for (const test of tests) {
+      const validation = validateTestCode(test.code);
+      if (!validation.valid) {
+        return {
+          passed: 0,
+          failed: tests.length,
+          skipped: 0,
+          timedOut: 0,
+          total: tests.length,
+          duration: 0,
+          tests: tests.map((t) => ({
+            id: t.id,
+            title: t.title,
+            status: 'failed' as const,
+            duration: 0,
+            error: t.id === test.id
+              ? `Code validation failed: ${validation.errors.join('; ')}`
+              : 'Skipped due to validation failure in another test',
+          })),
+        };
+      }
+    }
+
     // Write config
     await writeFile(join(tmpDir, 'playwright.config.ts'), generateConfig(options));
 
@@ -199,17 +225,34 @@ export async function runPlaywrightTests(
  * Spawn the Playwright test process.
  * Returns the exit code.
  */
+/**
+ * Resolve the path to the Playwright CLI binary from our own node_modules.
+ */
+function resolvePlaywrightCli(): string {
+  const require = createRequire(import.meta.url);
+  const playwrightPath = require.resolve('@playwright/test/cli');
+  return playwrightPath;
+}
+
 function runPlaywrightProcess(
   cwd: string,
   options: RunOptions,
 ): Promise<number> {
   return new Promise((resolve, reject) => {
-    const args = ['playwright', 'test', '--config', 'playwright.config.ts'];
+    const playwrightCli = resolvePlaywrightCli();
+    const args = [playwrightCli, 'test', '--config', 'playwright.config.ts'];
 
-    const child = spawn('npx', args, {
+    // Resolve the node_modules directory so temp-dir tests can find @playwright/test
+    const nodeModulesDir = join(dirname(playwrightCli), '..', '..');
+
+    const child = spawn('node', args, {
       cwd,
       stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, FORCE_COLOR: '0' },
+      env: {
+        ...process.env,
+        FORCE_COLOR: '0',
+        NODE_PATH: nodeModulesDir,
+      },
     });
 
     let stderr = '';

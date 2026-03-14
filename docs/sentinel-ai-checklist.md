@@ -59,7 +59,7 @@
 - [x] 임시 파일/디렉토리 cleanup
 
 ### 보안
-- [ ] AST 파싱으로 허용 API 검증 (선택적 — 초기엔 스킵 가능)
+- [x] 코드 검증 모듈 구현 (위험 API 차단: eval, fs, child_process 등)
 - [x] 실행 timeout 설정
 - [x] 브라우저 컨텍스트 격리 확인
 
@@ -70,29 +70,32 @@
 - [x] 실패 시 스크린샷 경로를 응답에 포함
 
 ### 테스트
-- [ ] 샘플 웹앱으로 Playwright 테스트 실행 E2E 검증
+- [x] 샘플 웹앱으로 Playwright 테스트 실행 E2E 검증 (example.com 대상, 5개 케이스)
 - [x] JSON 결과 파싱 단위 테스트 (8개 케이스 통과)
+- [x] 코드 검증 단위 테스트 (18개 케이스 통과)
 
 ---
 
 ## 3단계: pilot-ai 연동 검증
 
 ### pilot-ai 설정
-- [ ] pilot-ai `mcpServers` 설정에 sentinel-ai 추가
-- [ ] pilot-ai에서 `list_apps` 호출 확인
-- [ ] pilot-ai에서 `get_selectors` 호출 확인
+- [x] pilot-ai `mcpServers` 설정에 sentinel-ai 추가 (`~/.pilot/mcp-config.json`)
+- [x] pilot-ai MCP registry에 sentinel-ai 엔트리 추가
+- [x] sentinel-ai MCP 서버 initialize 응답 확인
 
 ### E2E 플로우 검증
-- [ ] pilot-ai → PRD 읽기 → 테스트케이스 YAML 생성
-- [ ] pilot-ai → YAML + selectors → Playwright 코드 생성
-- [ ] pilot-ai → `save_tests` 호출 → sentinel-ai에 저장
-- [ ] pilot-ai → `run_tests` 호출 → Playwright 실행 → 결과 반환
-- [ ] pilot-ai → `get_report` 호출 → 결과 요약 수신
+- [x] MCP E2E 검증 스크립트 작성 (`scripts/verify-mcp-flow.mjs`)
+- [x] initialize → list_apps → get_selectors → save_tests → run_tests → get_report 전체 플로우 6/6 통과
+- [ ] pilot-ai에서 실제 자연어 명령 → 전체 플로우 동작 확인 (pilot-ai 측 테스트 코드 생성 로직 구현 후)
 - [ ] Telegram/Slack에서 자연어 명령 → 전체 플로우 동작 확인
 
 ### progress 확인
 - [ ] `run_tests` 실행 중 progress 알림이 pilot-ai에 전달되는지 확인
 - [ ] pilot-ai가 progress를 Telegram으로 중계하는지 확인
+
+### 연동 문서
+- [x] pilot-ai 팀 연동 가이드 작성 (`docs/pilot-ai-integration-guide.md`)
+- [x] sentinel-ai 업데이트 시 pilot-ai 대응 가이드 포함
 
 ---
 
