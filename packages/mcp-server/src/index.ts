@@ -32,7 +32,7 @@ async function main() {
   registerListApps(server, registry);
   registerGetSelectors(server, registry);
   registerSaveTests(server, store);
-  registerRunTests(server, store);
+  registerRunTests(server, store, registry);
   registerGetReport(server);
 
   const transport = new StdioServerTransport();

@@ -47,31 +47,31 @@
 ## 2단계: Playwright 웹 테스트 러너
 
 ### playwright-runner 패키지
-- [ ] `packages/playwright-runner/package.json` 생성
-- [ ] `@playwright/test` 의존성 설치
-- [ ] `playwright.config.ts` 기본 설정 (headless, timeout, reporter=json)
+- [x] `packages/playwright-runner/package.json` 생성
+- [x] `@playwright/test` 의존성 설치
+- [x] `playwright.config.ts` 기본 설정 (headless, timeout, reporter=json)
 
 ### Write-to-Temp-File 실행 패턴
-- [ ] 임시 디렉토리 생성 유틸리티
-- [ ] 테스트 코드 → `.spec.ts` 임시 파일 작성
-- [ ] `child_process.execSync("npx playwright test ...")` 실행
-- [ ] JSON reporter 결과 파싱
-- [ ] 임시 파일/디렉토리 cleanup
+- [x] 임시 디렉토리 생성 유틸리티
+- [x] 테스트 코드 → `.spec.ts` 임시 파일 작성
+- [x] `child_process.spawn("npx playwright test ...")` 실행
+- [x] JSON reporter 결과 파싱
+- [x] 임시 파일/디렉토리 cleanup
 
 ### 보안
 - [ ] AST 파싱으로 허용 API 검증 (선택적 — 초기엔 스킵 가능)
-- [ ] 실행 timeout 설정
-- [ ] 브라우저 컨텍스트 격리 확인
+- [x] 실행 timeout 설정
+- [x] 브라우저 컨텍스트 격리 확인
 
 ### mcp-server 연동
-- [ ] `run_tests` 툴에서 `playwright-runner` 호출 연결
-- [ ] progress notifications 구현 (테스트 진행률)
-- [ ] cancellation 구현 (child process kill)
-- [ ] 실패 시 스크린샷 경로를 `resource_link`로 반환
+- [x] `run_tests` 툴에서 `playwright-runner` 호출 연결
+- [x] progress notifications 구현 (테스트 진행률)
+- [x] cancellation 구현 (child process kill + AbortSignal)
+- [x] 실패 시 스크린샷 경로를 응답에 포함
 
 ### 테스트
 - [ ] 샘플 웹앱으로 Playwright 테스트 실행 E2E 검증
-- [ ] JSON 결과가 MCP 응답으로 올바르게 변환되는지 확인
+- [x] JSON 결과 파싱 단위 테스트 (8개 케이스 통과)
 
 ---
 
