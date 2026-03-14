@@ -1,6 +1,6 @@
 {
   "name": "sentinel-qa",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "MCP server for AI-powered QA automation infrastructure",
   "type": "module",
   "bin": {
