@@ -1,12 +1,20 @@
 {
   "name": "sentinel-qa",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "MCP server for AI-powered QA automation infrastructure",
   "type": "module",
   "bin": {
     "sentinel-qa": "./dist/index.js"
   },
-  "files": ["dist"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahn283/sentinel-qa.git",
+    "directory": "packages/mcp-server"
+  },
+  "homepage": "https://github.com/ahn283/sentinel-qa#readme",
+  "keywords": ["mcp", "qa", "testing", "playwright", "maestro", "e2e", "automation", "analytics", "sentinel"],
+  "files": ["dist", "README.md"],
   "bundleDependencies": [
     "@sentinel-qa/playwright-runner",
     "@sentinel-qa/maestro-bridge"
